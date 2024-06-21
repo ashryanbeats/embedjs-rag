@@ -20,25 +20,38 @@ const getPrompt = () => {
   return prompt;
 };
 
-const prompt = getPrompt();
+const getRagApplication = async () => {
+  console.log("Getting RAG application...");
 
-console.log("Prompting with:", prompt);
+  const ragApplication = await new RAGApplicationBuilder()
+    .setModel(SIMPLE_MODELS["OPENAI_GPT3.5_TURBO"])
+    .setEmbeddingModel(new OpenAi3SmallEmbeddings())
+    .setVectorDb(new LanceDb({ path: path.resolve("./db") }))
+    .setCache(new LmdbCache({ path: path.resolve("./cache") }))
+    .addLoader(new WebLoader({ urlOrContent: "https://www.ashryan.io" }))
+    .build();
 
-const ragApplication = await new RAGApplicationBuilder()
-  .setModel(SIMPLE_MODELS["OPENAI_GPT3.5_TURBO"])
-  .setEmbeddingModel(new OpenAi3SmallEmbeddings())
-  .setVectorDb(new LanceDb({ path: path.resolve("./db") }))
-  .setCache(new LmdbCache({ path: path.resolve("./cache") }))
-  .addLoader(new WebLoader({ urlOrContent: "https://www.ashryan.io" }))
-  .build();
+  console.log("Built RAG applicaton with: ", ragApplication.model.modelName);
 
-console.log("Application built.");
+  return ragApplication;
+};
 
-const res = await ragApplication.query(`${args[0]}`);
+const printOutput = (output) => {
+  console.log(`
+    ${output.result}
 
-console.log(`
-${res.result}
-
-Sourced from:
-${res.sources.map((url) => "-" + url).join("\n")}
+    Sourced from:
+    ${output.sources.map((url) => "-" + url).join("\n")}
   `);
+};
+
+const main = async () => {
+  const prompt = getPrompt();
+  const ragApplication = await getRagApplication();
+
+  console.log("Prompting with:", prompt);
+  const res = await ragApplication.query(prompt);
+  printOutput(res);
+};
+
+main();
