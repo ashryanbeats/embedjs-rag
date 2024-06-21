@@ -9,6 +9,11 @@ import {
 import { LanceDb } from "@llm-tools/embedjs/vectorDb/lance";
 import { LmdbCache } from "@llm-tools/embedjs/cache/lmdb";
 
+/**
+ * Retrieves the prompt based on the command line arguments.
+ * If no arguments are provided, a default prompt is returned.
+ * @returns {string} The prompt to be used.
+ */
 const getPrompt = () => {
   const args = process.argv.slice(2);
   let prompt = `${args[0]}`;
@@ -20,6 +25,10 @@ const getPrompt = () => {
   return prompt;
 };
 
+/**
+ * Retrieves the RAG application with the specified configuration.
+ * @returns {Promise<RAGApplication>} The RAG application.
+ */
 const getRagApplication = async () => {
   console.log("Getting RAG application...");
 
@@ -31,11 +40,15 @@ const getRagApplication = async () => {
     .addLoader(new WebLoader({ urlOrContent: "https://www.ashryan.io" }))
     .build();
 
-  console.log("Built RAG applicaton with: ", ragApplication.model.modelName);
+  console.log("Built RAG application with: ", ragApplication.model.modelName);
 
   return ragApplication;
 };
 
+/**
+ * Prints the output of the RAG query.
+ * @param {Object} output - The output object containing the result and sources.
+ */
 const printOutput = (output) => {
   console.log(`
     ${output.result}
@@ -45,6 +58,9 @@ const printOutput = (output) => {
   `);
 };
 
+/**
+ * The main function that executes the RAG query.
+ */
 const main = async () => {
   const prompt = getPrompt();
   const ragApplication = await getRagApplication();
