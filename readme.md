@@ -2,6 +2,12 @@
 
 This repo serves to help you get started with the EmbedJS library (`@llm-tools/embedjs`) for implementing RAG in your own Node.js applications.
 
+## RAG resources
+
+- ["Applied AI Software Engineering: RAG" on The Pragmatic Engineer](https://newsletter.pragmaticengineer.com/p/rag?utm_source=post-email-title&publication_id=458709&post_id=144625800&utm_campaign=email-post-title&isFreemail=true&r=37d10&triedRedirect=true&utm_medium=email): a solid primer if you're looking a high-level explantion of RAG for app developers
+- ["RAG in Node.js with EmbedJS"](https://www.ashryan.io/rag-in-node-js-with-embedjs/): an article I wrote that discusses this repo in a bit more depth
+- [llm-tools/embedJs on GitHub](https://github.com/llm-tools/embedJs): the library this RAG example uses
+
 ## Requirements
 
 - Node.js 20+
